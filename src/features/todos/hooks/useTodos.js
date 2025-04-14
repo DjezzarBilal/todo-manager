@@ -46,7 +46,7 @@ const useTodos = () => {
 
       if (!res.ok) throw new Error('Failed to update todo');
     } catch (err) {
-      setTodos(prevTodos); // rollback
+      setTodos(prevTodos); 
       setError(err.message);
     }
   };
@@ -63,7 +63,7 @@ const useTodos = () => {
 
       if (!res.ok) throw new Error('Failed to delete todo');
     } catch (err) {
-      setTodos(prevTodos); // rollback
+      setTodos(prevTodos); 
       setError(err.message);
     }
   };
