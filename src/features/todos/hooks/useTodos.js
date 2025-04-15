@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 
 const useTodos = () => {
 
@@ -43,7 +45,6 @@ const useTodos = () => {
         },
         body: JSON.stringify(updatedTodo),
       });
-
       if (!res.ok) throw new Error('Failed to update todo');
     } catch (err) {
       setTodos(prevTodos); 
@@ -53,18 +54,24 @@ const useTodos = () => {
 
   // Delete todo
   const deleteTodo = async (todoToDelete) => {
+    // 🔄 Optimistic update
     const prevTodos = [...todos];
     setTodos(todos.filter((todo) => todo.id !== todoToDelete.id));
-
+  
     try {
       const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${todoToDelete.id}`, {
         method: 'DELETE',
       });
-
+  
       if (!res.ok) throw new Error('Failed to delete todo');
+  
+      // ✅ Succès
+      toast.success('Todo deleted successfully');
     } catch (err) {
-      setTodos(prevTodos); 
+      // ❌ Rollback
+      setTodos(prevTodos);
       setError(err.message);
+      toast.error('Failed to delete todo');
     }
   };
 
